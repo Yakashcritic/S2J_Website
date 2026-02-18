@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="S2J Ortho Health Services offers budget-friendly orthopedic services in Chennai, including home visit ortho doctor consultation, fractures & injuries care, knee replacements, spine injuries, and advanced surgical management." />
-  <meta name="keywords" content="Ortho Services in Chennai, Home Visit Ortho Doctor, Orthopedic surgeon Chennai, Knee replacement, Fracture treatment, Spine injury, Triplicane" />
+  <meta name="description" content="S2J Ortho Health Services offers expert, budget-friendly orthopedic care in Chennai. Home visit ortho doctor, spine and knee surgeries, fracture management, recorrection of failed surgeries, and 24/7 home services with transparent pricing." />
+  <meta name="keywords" content="Ortho Services in Chennai, Home Visit Ortho Doctor, budget friendly orthopedic care, Knee replacement Chennai, Spine surgery Chennai, Fracture treatment, Triplicane" />
   <meta name="theme-color" content="#002147" />
 
-  <title>S2J Ortho Health Services | Ortho Services in Chennai & Home Visit Ortho Doctor</title>
+  <title>S2J Ortho Health Services | Expert Ortho Care That Fits Your Budget (Chennai)</title>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -19,7 +19,6 @@
 
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-
 
   <style>
     :root{
@@ -40,11 +39,8 @@
       border-bottom: 1px solid rgba(2,33,71,0.10);
     }
 
-    /* Premium aurora background */
-    .aurora{
-      position: relative;
-      isolation: isolate;
-    }
+    /* Premium hero background */
+    .aurora{ position: relative; isolation: isolate; }
     .aurora:before{
       content:"";
       position:absolute;
@@ -81,7 +77,7 @@
     .blob.b2{ animation-duration: 12s; }
     .blob.b3{ animation-duration: 14s; }
 
-    /* Reveal animations (more premium) */
+    /* Reveal animations */
     .reveal{ opacity: 0; transform: translateY(18px) scale(.985); filter: blur(6px); transition: opacity 850ms cubic-bezier(.2,.9,.2,1), transform 850ms cubic-bezier(.2,.9,.2,1), filter 850ms cubic-bezier(.2,.9,.2,1); }
     .reveal.in-view{ opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
     .reveal-delay-1{ transition-delay: 120ms; }
@@ -144,6 +140,54 @@
     .nav-link.active{ color: var(--navy); font-weight: 800; }
     .nav-link.active .dot{ opacity:1; transform: scale(1); }
 
+    /* Live background themes */
+    #liveThemeBg{ position: fixed; inset: 0; z-index: -10; pointer-events: none; }
+    #bgCanvas{ width: 100%; height: 100%; display:block; opacity: .78; }
+    #bgOverlay{ width: 100%; height: 100%; opacity: .92; }
+
+    @keyframes overlayShift{
+      0%{ transform: translate3d(0,0,0) scale(1); filter: hue-rotate(0deg) saturate(1.05); }
+      50%{ transform: translate3d(0,-1.25%,0) scale(1.02); filter: hue-rotate(12deg) saturate(1.15); }
+      100%{ transform: translate3d(0,0,0) scale(1); filter: hue-rotate(0deg) saturate(1.05); }
+    }
+
+    body[data-theme="aurora"] #bgOverlay{
+      background:
+        radial-gradient(950px 520px at 12% 18%, rgba(255,215,0,.22), transparent 55%),
+        radial-gradient(900px 520px at 88% 18%, rgba(0,33,71,.32), transparent 60%),
+        radial-gradient(820px 520px at 55% 86%, rgba(255,215,0,.12), transparent 62%),
+        linear-gradient(135deg, rgba(255,255,255,1), rgba(248,250,252,1));
+      animation: overlayShift 16s ease-in-out infinite;
+    }
+
+    body[data-theme="midnight"] #bgOverlay{
+      background:
+        radial-gradient(900px 520px at 15% 15%, rgba(255,215,0,.18), transparent 62%),
+        radial-gradient(900px 520px at 85% 20%, rgba(99,102,241,.16), transparent 62%),
+        linear-gradient(135deg, rgba(2,6,23,1), rgba(0,33,71,.96) 55%, rgba(2,6,23,1));
+      animation: overlayShift 18s ease-in-out infinite;
+    }
+
+    body[data-theme="clinic"] #bgOverlay{
+      background:
+        radial-gradient(900px 520px at 15% 20%, rgba(0,33,71,.10), transparent 62%),
+        radial-gradient(900px 520px at 85% 15%, rgba(255,215,0,.14), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,1), rgba(248,250,252,1));
+    }
+
+    body[data-theme="sunrise"] #bgOverlay{
+      background:
+        radial-gradient(1000px 520px at 15% 15%, rgba(251,191,36,.22), transparent 60%),
+        radial-gradient(900px 520px at 85% 25%, rgba(59,130,246,.14), transparent 60%),
+        linear-gradient(135deg, rgba(255,255,255,1), rgba(248,250,252,1));
+      animation: overlayShift 15s ease-in-out infinite;
+    }
+
+    /* Theme switcher UI */
+    .theme-fab{ position: fixed; left: 16px; bottom: 24px; z-index: 65; }
+    @media (max-width: 640px){
+      .theme-fab{ bottom: 104px; } /* keep above mobile call bar */
+    }
 
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
@@ -155,17 +199,40 @@
   </style>
 </head>
 
-<body class="bg-white text-slate-900 selection:bg-[color:var(--gold)]/40 selection:text-[color:var(--ink)]">
+<body class="bg-white text-slate-900 selection:bg-[color:var(--gold)]/40 selection:text-[color:var(--ink)]" data-theme="aurora">
+  <!-- Live theme background (behind everything) -->
+  <div id="liveThemeBg" aria-hidden="true">
+    <canvas id="bgCanvas"></canvas>
+    <div id="bgOverlay"></div>
+  </div>
+
   <!-- Scroll progress bar -->
   <div class="fixed top-0 left-0 right-0 z-[70] h-1 bg-transparent">
     <div id="scrollProgress" class="h-full bg-[color:var(--gold)] shadow-[0_0_18px_rgba(255,215,0,.55)]"></div>
+  </div>
+
+  <!-- Theme switcher (premium) -->
+  <div class="theme-fab">
+    <div class="relative">
+      <button id="themeBtn" type="button" class="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white/80 px-4 py-2 text-sm font-extrabold text-slate-800 shadow-lg hover:bg-white" aria-expanded="false" aria-controls="themeMenu">
+        <i data-lucide="palette" class="h-4 w-4 text-[color:var(--navy)]"></i>
+        <span>Theme</span>
+        <i data-lucide="chevron-up" class="h-4 w-4"></i>
+      </button>
+      <div id="themeMenu" class="hidden absolute left-0 bottom-14 w-56 rounded-2xl border border-slate-200 bg-white shadow-xl overflow-hidden">
+        <button class="theme-opt w-full text-left px-4 py-3 hover:bg-slate-50 text-sm font-semibold" data-theme="aurora">Aurora (Premium)</button>
+        <button class="theme-opt w-full text-left px-4 py-3 hover:bg-slate-50 text-sm font-semibold" data-theme="clinic">Clinic White (Clean)</button>
+        <button class="theme-opt w-full text-left px-4 py-3 hover:bg-slate-50 text-sm font-semibold" data-theme="midnight">Midnight (Elite)</button>
+        <button class="theme-opt w-full text-left px-4 py-3 hover:bg-slate-50 text-sm font-semibold" data-theme="sunrise">Sunrise (Warm)</button>
+      </div>
+    </div>
   </div>
 
   <!-- Top announcement strip -->
   <div class="bg-[color:var(--navy)] text-white relative overflow-hidden">
     <div class="absolute inset-0 opacity-40" style="background: radial-gradient(800px 260px at 20% 20%, rgba(255,215,0,.28), transparent 60%), radial-gradient(700px 260px at 90% 10%, rgba(255,215,0,.18), transparent 60%);"></div>
     <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2 flex flex-col sm:flex-row gap-2 sm:gap-4 items-start sm:items-center justify-between text-sm">
-      <p class="opacity-95">Trusted orthopedic care in Chennai • Home visits • Surgical excellence within your budget</p>
+      <p class="opacity-95"><span class="font-extrabold text-[color:var(--gold)]">Expert Care That Fits Your Budget</span> • Home visits • Surgical excellence</p>
       <div class="flex flex-wrap items-center gap-3">
         <a class="inline-flex items-center gap-2 hover:opacity-95" href="tel:+919840596418" aria-label="Call S2J Ortho Health Services">
           <span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/10">
@@ -229,7 +296,7 @@
 
       <!-- Mobile menu -->
       <div id="mobileMenu" class="lg:hidden hidden pb-4">
-        <div class="mt-1 grid gap-2 rounded-2xl border border-slate-200 bg-white/80 p-3">
+        <div class="mt-1 grid gap-2 rounded-2xl border border-slate-200 bg-white/90 p-3">
           <a class="px-3 py-2 rounded-xl hover:bg-slate-100" href="#services">Services</a>
           <a class="px-3 py-2 rounded-xl hover:bg-slate-100" href="#surgical">Surgical Management</a>
           <a class="px-3 py-2 rounded-xl hover:bg-slate-100" href="#homecare">Home Care</a>
@@ -245,7 +312,7 @@
   </header>
 
   <main>
-    <!-- Hero -->
+    <!-- HERO -->
     <section class="aurora grain overflow-hidden">
       <!-- Floating blobs -->
       <div class="absolute inset-0 pointer-events-none">
@@ -254,30 +321,44 @@
         <div class="blob b3 absolute -bottom-40 left-1/2 -translate-x-1/2 h-96 w-96 rounded-full blur-3xl" style="background: radial-gradient(circle at 40% 40%, rgba(255,215,0,.25), rgba(0,33,71,.20) 55%, transparent 72%);"></div>
       </div>
 
-      <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-14 pb-14 sm:pt-16 sm:pb-16 lg:pt-20 lg:pb-18">
+      <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-14 sm:pt-16 sm:pb-16 lg:pt-20">
         <div class="grid lg:grid-cols-12 gap-10 items-center">
           <div class="lg:col-span-7">
             <div class="reveal inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-white/90 text-xs font-semibold tracking-wide border border-white/10">
-              <i data-lucide="shield-check" class="h-4 w-4 text-[color:var(--gold)]"></i>
-              <span>Budget-friendly • Home visits • Surgical expertise</span>
+              <i data-lucide="badge-check" class="h-4 w-4 text-[color:var(--gold)]"></i>
+              <span>High-tech expertise • Strictly budget-customized</span>
             </div>
 
             <h1 class="reveal reveal-delay-1 mt-5 text-white text-4xl sm:text-5xl lg:text-6xl font-black leading-tight">
-              Gym Pain Shouldn’t Stop Your Gains! <span class="text-[color:var(--gold)]">Recover Faster</span>, Train Stronger.
+              Don’t let <span class="text-[color:var(--gold)]">Pain</span> or <span class="text-[color:var(--gold)]">Budget</span> stop your Recovery.
+              <span class="block">Expert Ortho Care at Your Doorstep.</span>
             </h1>
 
             <p class="reveal reveal-delay-2 mt-5 text-white/90 text-base sm:text-lg max-w-2xl">
-              Expert orthopedic care at your doorstep and advanced surgical excellence within your budget — led by a compassionate team that treats your pain seriously.
+              From <span class="font-semibold">gym/sports injuries</span> and <span class="font-semibold">spine care</span> to <span class="font-semibold">home-based treatment</span> — we build a safe plan that fits your financial comfort without compromising quality.
             </p>
 
-            <div class="reveal reveal-delay-3 mt-7 flex flex-col sm:flex-row gap-3">
+            <!-- Budget pledge (must be visible on first fold mobile) -->
+            <div class="reveal reveal-delay-3 mt-6 rounded-3xl border border-white/15 bg-white/10 p-5 sm:p-6">
+              <div class="flex items-start gap-3">
+                <span class="mt-0.5 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--gold)] text-[color:var(--navy)]">
+                  <i data-lucide="hand-coins" class="h-6 w-6"></i>
+                </span>
+                <div class="min-w-0">
+                  <p class="text-white font-black text-lg">100% Budget-Friendly &amp; Transparent Pricing</p>
+                  <p class="mt-1 text-sm text-white/85">Whether it’s a major spine surgery or a simple home dressing — we customize your care plan to fit your budget clearly.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="reveal mt-6 flex flex-col sm:flex-row gap-3">
               <a href="#contact" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[color:var(--gold)] text-[color:var(--navy)] px-6 py-3 font-extrabold shadow-lg hover:brightness-95 btn-shine">
                 <i data-lucide="calendar-check" class="h-5 w-5"></i>
                 <span>Book Home Visit</span>
               </a>
               <a href="tel:+919840596418" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-white/10 text-white px-6 py-3 font-semibold border border-white/15 hover:bg-white/15">
-                <i data-lucide="stethoscope" class="h-5 w-5"></i>
-                <span>Consult an Expert</span>
+                <i data-lucide="phone-call" class="h-5 w-5"></i>
+                <span>Consult Now</span>
               </a>
             </div>
 
@@ -285,10 +366,10 @@
             <div class="reveal mt-6 max-w-2xl">
               <p class="text-xs font-semibold text-white/80">Quick select (adds to your message):</p>
               <div class="mt-2 flex flex-wrap gap-2">
-                <button type="button" class="quick-chip rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/15" data-chip="Severe knee pain - need evaluation">Knee pain</button>
-                <button type="button" class="quick-chip rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/15" data-chip="Suspected fracture/injury - need urgent guidance">Fracture/injury</button>
+                <button type="button" class="quick-chip rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/15" data-chip="Gym/sports injury - need evaluation">Gym / sports injury</button>
                 <button type="button" class="quick-chip rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/15" data-chip="Spine pain / radiating pain - need assessment">Spine pain</button>
-                <button type="button" class="quick-chip rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/15" data-chip="Need home visit for senior/post-op follow-up">Home visit</button>
+                <button type="button" class="quick-chip rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/15" data-chip="Need 24/7 home service (dressing / suture removal / casting)">Home service</button>
+                <button type="button" class="quick-chip rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/15" data-chip="Failed surgery / infected plate or screw - need recorrection opinion">Recorrection opinion</button>
               </div>
               <p class="mt-2 text-xs text-white/75">Tamil friendly support: நிம்மதியான ஆலோசனை • தெளிவான செலவு விளக்கம் • வீட்டில் சேவை</p>
             </div>
@@ -299,42 +380,38 @@
                   <i data-lucide="timer" class="h-4 w-4"></i>
                   <span>Fast response</span>
                 </div>
-                <p class="mt-1 text-xs text-slate-600">Home-based care &amp; follow-up support</p>
+                <p class="mt-1 text-xs text-slate-600">Quick next-step guidance</p>
               </div>
               <div class="gradient-border px-4 py-3">
                 <div class="flex items-center gap-2 text-sm font-semibold text-[color:var(--navy)]">
-                  <i data-lucide="badge-check" class="h-4 w-4"></i>
-                  <span>Trusted care</span>
+                  <i data-lucide="shield-check" class="h-4 w-4"></i>
+                  <span>Expert team</span>
                 </div>
-                <p class="mt-1 text-xs text-slate-600">Experienced orthopedic guidance</p>
+                <p class="mt-1 text-xs text-slate-600">Safe, evidence-based decisions</p>
               </div>
               <div class="gradient-border px-4 py-3">
                 <div class="flex items-center gap-2 text-sm font-semibold text-[color:var(--navy)]">
                   <i data-lucide="wallet" class="h-4 w-4"></i>
-                  <span>Within budget</span>
+                  <span>Budget fit</span>
                 </div>
-                <p class="mt-1 text-xs text-slate-600">Clear, affordable treatment options</p>
+                <p class="mt-1 text-xs text-slate-600">Transparent, customized plan</p>
               </div>
             </div>
           </div>
 
+          <!-- Hero Visuals -->
           <div class="lg:col-span-5">
             <div class="reveal relative rounded-3xl overflow-hidden border border-white/15 bg-white/10 shadow-2xl">
               <div class="relative aspect-[4/5]">
-                <img alt="Orthopedic care and recovery" class="absolute inset-0 h-full w-full object-cover opacity-90" src="https://images.unsplash.com/photo-1550831107-1553da8c8464?auto=format&fit=crop&w=1200&q=60" loading="lazy" />
+                <img alt="Athlete injury and orthopedic support" class="absolute inset-0 h-full w-full object-cover opacity-90" src="https://images.unsplash.com/photo-1579758629938-03607ccdbaba?auto=format&fit=crop&w=1200&q=60" loading="lazy" />
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
 
-                <div class="absolute top-4 left-4 right-4">
-                  <div class="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-white">
-                    <div class="flex items-center justify-between gap-3">
-                      <div>
-                        <p class="text-xs text-white/80">Trusted in Chennai</p>
-                        <p class="text-sm font-extrabold">Home Consult • Diagnostics • Recovery</p>
-                      </div>
-                      <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[color:var(--gold)] text-[color:var(--navy)]">
-                        <i data-lucide="sparkles" class="h-5 w-5"></i>
-                      </span>
-                    </div>
+                <!-- Secondary inset image -->
+                <div class="absolute top-5 right-5 w-44 sm:w-48 rounded-2xl overflow-hidden border border-white/20 shadow-xl">
+                  <img alt="Caring medical team" class="h-28 sm:h-32 w-full object-cover" src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=60" loading="lazy" />
+                  <div class="bg-white/92 p-2">
+                    <p class="text-[11px] font-extrabold text-[color:var(--navy)]">Caring guidance</p>
+                    <p class="text-[11px] text-slate-600">Clear plan + budget fit</p>
                   </div>
                 </div>
 
@@ -342,8 +419,8 @@
                   <div class="rounded-2xl bg-white/92 p-4 border border-white shadow-lg">
                     <div class="flex items-start justify-between gap-3">
                       <div>
-                        <p class="text-xs font-semibold text-slate-500">Quick Help</p>
-                        <p class="mt-1 text-sm font-extrabold text-[color:var(--navy)]">Home Consultation • X-Ray • Wound Care</p>
+                        <p class="text-xs font-semibold text-slate-500">Main focus</p>
+                        <p class="mt-1 text-sm font-extrabold text-[color:var(--navy)]">Sports injuries • Spine • Home-based treatment</p>
                       </div>
                       <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white">
                         <i data-lucide="heart-pulse" class="h-5 w-5"></i>
@@ -355,8 +432,8 @@
                         <span>Call Now</span>
                       </a>
                       <a href="#services" class="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-200">
-                        <i data-lucide="arrow-down" class="h-4 w-4"></i>
-                        <span>Explore Services</span>
+                        <i data-lucide="layout-grid" class="h-4 w-4"></i>
+                        <span>See Services</span>
                       </a>
                     </div>
                   </div>
@@ -367,7 +444,7 @@
             <div class="reveal mt-4 rounded-2xl border border-white/15 bg-white/10 p-4 text-white/90 text-sm">
               <div class="flex items-center gap-2">
                 <i data-lucide="siren" class="h-4 w-4 text-[color:var(--gold)]"></i>
-                <p><span class="font-semibold text-white">Emergency guidance:</span> Suspected fracture / severe pain? Call immediately for fast next-step advice.</p>
+                <p><span class="font-semibold text-white">Urgent symptoms?</span> Suspected fracture, severe pain, deformity, weakness or numbness — call immediately for safe next steps.</p>
               </div>
             </div>
           </div>
@@ -377,23 +454,22 @@
         <div class="reveal mt-10 rounded-3xl border border-white/10 bg-white/10 p-5 sm:p-6">
           <div class="grid sm:grid-cols-3 gap-4 text-white">
             <div class="rounded-2xl border border-white/10 bg-white/10 p-4">
-              <p class="text-xs text-white/75">Response priority</p>
+              <p class="text-xs text-white/75">Guidance priority</p>
               <p class="mt-1 text-2xl font-black"><span class="count" data-count-to="30" data-count-suffix="min">0</span></p>
-              <p class="mt-1 text-xs text-white/75">Fast call-back guidance</p>
+              <p class="mt-1 text-xs text-white/75">Fast next-step clarity</p>
             </div>
             <div class="rounded-2xl border border-white/10 bg-white/10 p-4">
-              <p class="text-xs text-white/75">Home visit support</p>
+              <p class="text-xs text-white/75">Home service support</p>
               <p class="mt-1 text-2xl font-black"><span class="count" data-count-to="24" data-count-suffix="/7">0</span></p>
-              <p class="mt-1 text-xs text-white/75">Care at your doorstep</p>
+              <p class="mt-1 text-xs text-white/75">Convenience + comfort</p>
             </div>
             <div class="rounded-2xl border border-white/10 bg-white/10 p-4">
-              <p class="text-xs text-white/75">Budget focus</p>
+              <p class="text-xs text-white/75">Budget transparency</p>
               <p class="mt-1 text-2xl font-black"><span class="count" data-count-to="100" data-count-suffix="%">0</span></p>
-              <p class="mt-1 text-xs text-white/75">Transparent options</p>
+              <p class="mt-1 text-xs text-white/75">Clear pricing options</p>
             </div>
           </div>
         </div>
-
       </div>
 
       <!-- Divider wave -->
@@ -404,149 +480,267 @@
       </div>
     </section>
 
-    <!-- Trust bar -->
-    <section class="border-b border-slate-100 bg-white">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-        <div class="grid md:grid-cols-3 gap-5 items-stretch">
-          <div class="reveal glow-card rounded-2xl border border-slate-200 p-5 bg-white shadow-sm hover:shadow-lg transition-shadow" data-tilt>
-            <div class="flex items-center gap-3">
-              <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white">
-                <i data-lucide="home" class="h-5 w-5"></i>
-              </span>
-              <div>
-                <p class="font-extrabold text-[color:var(--navy)]">Home Visit Ortho Doctor</p>
-                <p class="text-sm text-slate-600">Comfort-first care for families and seniors</p>
-              </div>
-            </div>
+    <!-- BUDGET PLEDGE SECTION (High importance) -->
+    <section id="budget" class="bg-white">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
+        <div class="grid lg:grid-cols-12 gap-6 items-center">
+          <div class="lg:col-span-7">
+            <h2 class="reveal text-3xl sm:text-4xl font-black text-[color:var(--navy)]">The Budget Pledge</h2>
+            <p class="reveal reveal-delay-1 mt-3 text-slate-600">Premium medical decision-making doesn’t have to mean premium stress. We keep pricing transparent and customize your plan to your comfort.</p>
           </div>
-
-          <div class="reveal reveal-delay-1 glow-card rounded-2xl border border-slate-200 p-5 bg-white shadow-sm hover:shadow-lg transition-shadow" data-tilt>
-            <div class="flex items-center gap-3">
-              <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white">
-                <i data-lucide="hospital" class="h-5 w-5"></i>
-              </span>
-              <div>
-                <p class="font-extrabold text-[color:var(--navy)]">Advanced Surgical Support</p>
-                <p class="text-sm text-slate-600">Right plan, right procedure, right recovery</p>
+          <div class="lg:col-span-5">
+            <div class="reveal reveal-delay-2 glow-card rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-sm" data-tilt>
+              <div class="flex items-start gap-4">
+                <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white">
+                  <i data-lucide="shield-plus" class="h-6 w-6"></i>
+                </span>
+                <div>
+                  <p class="text-lg font-black text-slate-900">100% Budget-Friendly &amp; Transparent Pricing</p>
+                  <p class="mt-2 text-sm text-slate-600">Whether it’s a major spine surgery or a simple home dressing, we customize our care plan to fit your financial comfort without compromising quality.</p>
+                  <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700"><i data-lucide="check" class="h-3.5 w-3.5 text-emerald-600"></i>Clear options</span>
+                    <span class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700"><i data-lucide="check" class="h-3.5 w-3.5 text-emerald-600"></i>No confusion</span>
+                    <span class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700"><i data-lucide="check" class="h-3.5 w-3.5 text-emerald-600"></i>Safe choices</span>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-
-          <div class="reveal reveal-delay-2 glow-card rounded-2xl border border-slate-200 p-5 bg-white shadow-sm hover:shadow-lg transition-shadow" data-tilt>
-            <div class="flex items-center gap-3">
-              <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white">
-                <i data-lucide="hand-coins" class="h-5 w-5"></i>
-              </span>
-              <div>
-                <p class="font-extrabold text-[color:var(--navy)]">Budget-Friendly Options</p>
-                <p class="text-sm text-slate-600">Transparent guidance to reduce stress</p>
-              </div>
+              <a href="#contact" class="mt-5 inline-flex items-center justify-center gap-2 rounded-2xl bg-[color:var(--gold)] text-[color:var(--navy)] px-5 py-3 font-black hover:brightness-95 btn-shine">
+                <i data-lucide="message-square" class="h-5 w-5"></i>
+                <span>Share your budget comfort</span>
+              </a>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Specialized Services -->
+    <!-- Comprehensive Service Portfolio -->
     <section id="services" class="bg-slate-50">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <div class="max-w-2xl">
-          <h2 class="reveal text-3xl sm:text-4xl font-black text-[color:var(--navy)]">Specialized Orthopedic Services</h2>
-          <p class="reveal reveal-delay-1 mt-3 text-slate-600">Focused, evidence-based care for athletes, working professionals, seniors, and families — with a calm, reassuring approach.</p>
+        <div class="max-w-3xl">
+          <h2 class="reveal text-3xl sm:text-4xl font-black text-[color:var(--navy)]">Comprehensive Service Portfolio</h2>
+          <p class="reveal reveal-delay-1 mt-3 text-slate-600">Categorized care — from advanced surgeries to 24/7 home services. Tap “Learn more” for what to expect.</p>
         </div>
 
-        <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <!-- Service cards (open modal) -->
-          <article class="reveal glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
-            <div class="flex items-start justify-between gap-4">
-              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white">
-                <i data-lucide="bandage" class="h-6 w-6"></i>
-              </div>
-              <span class="text-xs font-semibold text-[color:var(--navy)] bg-[color:var(--gold)]/35 px-2 py-1 rounded-full">Fast guidance</span>
+        <!-- Category A -->
+        <div class="mt-10">
+          <div class="reveal flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+            <div>
+              <p class="text-xs font-semibold text-slate-500">Category A</p>
+              <h3 class="text-2xl font-black text-slate-900">Advanced Surgeries</h3>
+              <p class="mt-1 text-sm text-slate-600">Spine, knee, hip, and complex fractures — planned safely, explained clearly.</p>
             </div>
-            <h3 class="mt-4 text-lg font-extrabold text-slate-900">Fractures &amp; Injuries</h3>
-            <p class="mt-2 text-sm text-slate-600">Assessment, stabilization, pain control, and treatment planning to protect healing.</p>
-            <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="fractures" type="button">
-              <span class="hover:underline">Learn More</span>
-              <i data-lucide="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-0.5"></i>
-            </button>
-          </article>
+            <a href="#contact" class="inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)] hover:underline">
+              <i data-lucide="calendar-check" class="h-4 w-4"></i>
+              <span>Request a surgical opinion</span>
+            </a>
+          </div>
 
-          <article class="reveal reveal-delay-1 glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
-            <div class="flex items-start justify-between gap-4">
-              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white">
-                <i data-lucide="activity" class="h-6 w-6"></i>
-              </div>
-              <span class="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-1 rounded-full">Mobility</span>
-            </div>
-            <h3 class="mt-4 text-lg font-extrabold text-slate-900">Knee Replacements</h3>
-            <p class="mt-2 text-sm text-slate-600">Guidance from evaluation to rehabilitation — built around comfort and confidence.</p>
-            <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="knee" type="button">
-              <span class="hover:underline">Learn More</span>
-              <i data-lucide="arrow-right" class="h-4 w-4"></i>
-            </button>
-          </article>
+          <div class="mt-5 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <article class="reveal glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="move-vertical" class="h-6 w-6"></i></div>
+              <h4 class="mt-4 font-extrabold text-slate-900">Spine Surgeries</h4>
+              <p class="mt-2 text-sm text-slate-600">From evaluation to recovery — safety-first planning.</p>
+              <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="spineSurgery" type="button"><span class="hover:underline">Learn More</span><i data-lucide="arrow-right" class="h-4 w-4"></i></button>
+            </article>
 
-          <article class="reveal reveal-delay-2 glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
-            <div class="flex items-start justify-between gap-4">
-              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white">
-                <i data-lucide="move-vertical" class="h-6 w-6"></i>
-              </div>
-              <span class="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-1 rounded-full">Spine</span>
-            </div>
-            <h3 class="mt-4 text-lg font-extrabold text-slate-900">Spine Injuries</h3>
-            <p class="mt-2 text-sm text-slate-600">Thorough evaluation and a safe plan that prioritizes nerve and mobility protection.</p>
-            <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="spine" type="button">
-              <span class="hover:underline">Learn More</span>
-              <i data-lucide="arrow-right" class="h-4 w-4"></i>
-            </button>
-          </article>
+            <article class="reveal reveal-delay-1 glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="activity" class="h-6 w-6"></i></div>
+              <h4 class="mt-4 font-extrabold text-slate-900">Knee Replacements</h4>
+              <p class="mt-2 text-sm text-slate-600">Clear indications, realistic goals, smooth rehab.</p>
+              <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="kneeReplace" type="button"><span class="hover:underline">Learn More</span><i data-lucide="arrow-right" class="h-4 w-4"></i></button>
+            </article>
 
-          <article class="reveal glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
-            <div class="flex items-start justify-between gap-4">
-              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white">
-                <i data-lucide="link-2" class="h-6 w-6"></i>
-              </div>
-              <span class="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-1 rounded-full">Stability</span>
-            </div>
-            <h3 class="mt-4 text-lg font-extrabold text-slate-900">Dislocations</h3>
-            <p class="mt-2 text-sm text-slate-600">Careful reduction guidance and long-term stability planning to prevent recurrence.</p>
-            <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="dislocation" type="button">
-              <span class="hover:underline">Learn More</span>
-              <i data-lucide="arrow-right" class="h-4 w-4"></i>
-            </button>
-          </article>
+            <article class="reveal reveal-delay-2 glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="circle" class="h-6 w-6"></i></div>
+              <h4 class="mt-4 font-extrabold text-slate-900">Hip Injury Care</h4>
+              <p class="mt-2 text-sm text-slate-600">Pain control, mobility planning, surgical options.</p>
+              <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="hipCare" type="button"><span class="hover:underline">Learn More</span><i data-lucide="arrow-right" class="h-4 w-4"></i></button>
+            </article>
 
-          <article class="reveal reveal-delay-1 glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
-            <div class="flex items-start justify-between gap-4">
-              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white">
-                <i data-lucide="wrench" class="h-6 w-6"></i>
-              </div>
-              <span class="text-xs font-semibold text-[color:var(--navy)] bg-[color:var(--gold)]/35 px-2 py-1 rounded-full">Advanced</span>
-            </div>
-            <h3 class="mt-4 text-lg font-extrabold text-slate-900">All Types of Ortho Surgeries</h3>
-            <p class="mt-2 text-sm text-slate-600">From planning and budgeting to follow-up recovery — coordinated end-to-end care.</p>
-            <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="surgeries" type="button">
-              <span class="hover:underline">Learn More</span>
-              <i data-lucide="arrow-right" class="h-4 w-4"></i>
-            </button>
-          </article>
-
-          <article class="reveal reveal-delay-2 glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
-            <div class="flex items-start justify-between gap-4">
-              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white">
-                <i data-lucide="scan" class="h-6 w-6"></i>
-              </div>
-              <span class="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-1 rounded-full">Recovery</span>
-            </div>
-            <h3 class="mt-4 text-lg font-extrabold text-slate-900">Post-Op Follow-up &amp; Reviews</h3>
-            <p class="mt-2 text-sm text-slate-600">Clear recovery milestones, wound checks, and rehab coordination for smooth progress.</p>
-            <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="followup" type="button">
-              <span class="hover:underline">Learn More</span>
-              <i data-lucide="arrow-right" class="h-4 w-4"></i>
-            </button>
-          </article>
+            <article class="reveal reveal-delay-3 glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="bandage" class="h-6 w-6"></i></div>
+              <h4 class="mt-4 font-extrabold text-slate-900">Complex Fractures</h4>
+              <p class="mt-2 text-sm text-slate-600">Stability, alignment, and healing protection.</p>
+              <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="complexFracture" type="button"><span class="hover:underline">Learn More</span><i data-lucide="arrow-right" class="h-4 w-4"></i></button>
+            </article>
+          </div>
         </div>
+
+        <!-- Category B -->
+        <div class="mt-12">
+          <div class="reveal flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+            <div>
+              <p class="text-xs font-semibold text-slate-500">Category B</p>
+              <h3 class="text-2xl font-black text-slate-900">Recorrection Specialty</h3>
+              <p class="mt-1 text-sm text-slate-600"><span class="font-extrabold text-[color:var(--navy)]">We fix what went wrong elsewhere.</span> Infection-aware planning and realistic outcomes.</p>
+            </div>
+            <a href="#surgical" class="inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)] hover:underline">
+              <i data-lucide="shield-plus" class="h-4 w-4"></i>
+              <span>See surgical management</span>
+            </a>
+          </div>
+
+          <div class="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <article class="reveal glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="biohazard" class="h-6 w-6"></i></div>
+              <h4 class="mt-4 font-extrabold text-slate-900">Infected Malunion Management</h4>
+              <p class="mt-2 text-sm text-slate-600">Staged care to control infection and restore stability.</p>
+              <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="infectedMalunion" type="button"><span class="hover:underline">Learn More</span><i data-lucide="arrow-right" class="h-4 w-4"></i></button>
+            </article>
+
+            <article class="reveal reveal-delay-1 glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="rotate-ccw" class="h-6 w-6"></i></div>
+              <h4 class="mt-4 font-extrabold text-slate-900">Failed Surgery Correction</h4>
+              <p class="mt-2 text-sm text-slate-600">Second opinion and recorrection pathway planning.</p>
+              <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="failedSurgery" type="button"><span class="hover:underline">Learn More</span><i data-lucide="arrow-right" class="h-4 w-4"></i></button>
+            </article>
+
+            <article class="reveal reveal-delay-2 glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="wrench" class="h-6 w-6"></i></div>
+              <h4 class="mt-4 font-extrabold text-slate-900">Infected Plate/Screw Removal</h4>
+              <p class="mt-2 text-sm text-slate-600">Implant removal, debridement, limb-saving focus.</p>
+              <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="implantRemoval" type="button"><span class="hover:underline">Learn More</span><i data-lucide="arrow-right" class="h-4 w-4"></i></button>
+            </article>
+          </div>
+
+          <div class="reveal mt-6 rounded-3xl bg-[color:var(--navy)] p-6 text-white relative overflow-hidden">
+            <div class="absolute inset-0 opacity-45" style="background: radial-gradient(700px 260px at 20% 20%, rgba(255,215,0,.30), transparent 55%), radial-gradient(700px 260px at 90% 20%, rgba(255,215,0,.20), transparent 58%);"></div>
+            <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <p class="text-sm text-white/85">Need a recorrection opinion?</p>
+                <p class="text-xl font-black">Don’t worry — we are here to <span class="text-[color:var(--gold)]">CORRECT IT</span> within your budget.</p>
+              </div>
+              <a href="tel:+919840596418" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[color:var(--gold)] text-[color:var(--navy)] px-5 py-3 font-black hover:brightness-95 btn-shine">
+                <i data-lucide="phone-call" class="h-5 w-5"></i>
+                <span>Call 98405 96418</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category C -->
+        <div class="mt-12">
+          <div class="reveal">
+            <p class="text-xs font-semibold text-slate-500">Category C</p>
+            <h3 class="text-2xl font-black text-slate-900">24/7 Home Services</h3>
+            <p class="mt-1 text-sm text-slate-600">Affordable &amp; customized care at your doorstep.</p>
+          </div>
+
+          <div class="mt-5 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <article class="reveal glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="scan" class="h-6 w-6"></i></div>
+              <h4 class="mt-4 font-extrabold text-slate-900">X-Ray &amp; Lab at Home</h4>
+              <p class="mt-2 text-sm text-slate-600">Faster decisions without travel stress.</p>
+              <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="xrayLab" type="button"><span class="hover:underline">Learn More</span><i data-lucide="arrow-right" class="h-4 w-4"></i></button>
+            </article>
+
+            <article class="reveal reveal-delay-1 glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="syringe" class="h-6 w-6"></i></div>
+              <h4 class="mt-4 font-extrabold text-slate-900">Injection / Traction</h4>
+              <p class="mt-2 text-sm text-slate-600">Relief-focused interventions when appropriate.</p>
+              <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="injectionTraction" type="button"><span class="hover:underline">Learn More</span><i data-lucide="arrow-right" class="h-4 w-4"></i></button>
+            </article>
+
+            <article class="reveal reveal-delay-2 glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="cast" class="h-6 w-6"></i></div>
+              <h4 class="mt-4 font-extrabold text-slate-900">Plastering / Casting / Fiberglass</h4>
+              <p class="mt-2 text-sm text-slate-600">Immobilization for safe healing.</p>
+              <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="casting" type="button"><span class="hover:underline">Learn More</span><i data-lucide="arrow-right" class="h-4 w-4"></i></button>
+            </article>
+
+            <article class="reveal reveal-delay-3 glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="scissors" class="h-6 w-6"></i></div>
+              <h4 class="mt-4 font-extrabold text-slate-900">Suture Removal</h4>
+              <p class="mt-2 text-sm text-slate-600">Safe timing and aftercare instructions.</p>
+              <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="sutureRemoval" type="button"><span class="hover:underline">Learn More</span><i data-lucide="arrow-right" class="h-4 w-4"></i></button>
+            </article>
+          </div>
+        </div>
+
+        <!-- Category D -->
+        <div class="mt-12">
+          <div class="reveal">
+            <p class="text-xs font-semibold text-slate-500">Category D</p>
+            <h3 class="text-2xl font-black text-slate-900">Post-Surgical &amp; Rehab</h3>
+            <p class="mt-1 text-sm text-slate-600">Nursing support, physiotherapy, wound care, and follow-ups until you’re back on your feet.</p>
+          </div>
+
+          <div class="mt-5 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <article class="reveal glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="user-round" class="h-6 w-6"></i></div>
+              <h4 class="mt-4 font-extrabold text-slate-900">Professional Nursing Care</h4>
+              <p class="mt-2 text-sm text-slate-600">Comfort-first monitoring and support.</p>
+              <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="nursing" type="button"><span class="hover:underline">Learn More</span><i data-lucide="arrow-right" class="h-4 w-4"></i></button>
+            </article>
+
+            <article class="reveal reveal-delay-1 glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="dumbbell" class="h-6 w-6"></i></div>
+              <h4 class="mt-4 font-extrabold text-slate-900">Customized Physiotherapy</h4>
+              <p class="mt-2 text-sm text-slate-600">Safe progression and movement goals.</p>
+              <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="physio" type="button"><span class="hover:underline">Learn More</span><i data-lucide="arrow-right" class="h-4 w-4"></i></button>
+            </article>
+
+            <article class="reveal reveal-delay-2 glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="droplets" class="h-6 w-6"></i></div>
+              <h4 class="mt-4 font-extrabold text-slate-900">Wound Dressing</h4>
+              <p class="mt-2 text-sm text-slate-600">Sterile dressing and recovery monitoring.</p>
+              <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="wound" type="button"><span class="hover:underline">Learn More</span><i data-lucide="arrow-right" class="h-4 w-4"></i></button>
+            </article>
+
+            <article class="reveal reveal-delay-3 glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-shadow" data-tilt>
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="route" class="h-6 w-6"></i></div>
+              <h4 class="mt-4 font-extrabold text-slate-900">Recovery Follow-ups</h4>
+              <p class="mt-2 text-sm text-slate-600">Milestones, do’s &amp; don’ts, confidence.</p>
+              <button class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-[color:var(--navy)]" data-service="followups" type="button"><span class="hover:underline">Learn More</span><i data-lucide="arrow-right" class="h-4 w-4"></i></button>
+            </article>
+          </div>
+        </div>
+
+        <!-- Patient Journey -->
+        <section id="journey" class="mt-14">
+          <div class="max-w-3xl">
+            <h2 class="reveal text-3xl sm:text-4xl font-black text-[color:var(--navy)]">The Patient Journey (Step-by-Step)</h2>
+            <p class="reveal reveal-delay-1 mt-3 text-slate-600">A simple process designed to reduce fear and reduce financial stress — without compromising clinical quality.</p>
+          </div>
+
+          <div class="mt-8 grid lg:grid-cols-12 gap-6">
+            <div class="reveal glow-card lg:col-span-3 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm" data-tilt>
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--gold)] text-[color:var(--navy)]"><span class="font-black">1</span></div>
+              <p class="mt-4 font-black text-slate-900">Consultation &amp; Counselling</p>
+              <p class="mt-2 text-sm text-slate-600">We understand your pain, history, and your <span class="font-semibold">budget comfort</span>.</p>
+            </div>
+            <div class="reveal reveal-delay-1 glow-card lg:col-span-3 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm" data-tilt>
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--gold)] text-[color:var(--navy)]"><span class="font-black">2</span></div>
+              <p class="mt-4 font-black text-slate-900">Expert Guidance</p>
+              <p class="mt-2 text-sm text-slate-600">Professional advice from our expert team of doctors with clear do’s &amp; don’ts.</p>
+            </div>
+            <div class="reveal reveal-delay-2 glow-card lg:col-span-3 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm" data-tilt>
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--gold)] text-[color:var(--navy)]"><span class="font-black">3</span></div>
+              <p class="mt-4 font-black text-slate-900">Treatment / Surgery</p>
+              <p class="mt-2 text-sm text-slate-600">Short hospital stays where needed, with safe, high-success decision-making.</p>
+            </div>
+            <div class="reveal reveal-delay-3 glow-card lg:col-span-3 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm" data-tilt>
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--gold)] text-[color:var(--navy)]"><span class="font-black">4</span></div>
+              <p class="mt-4 font-black text-slate-900">Recovery</p>
+              <p class="mt-2 text-sm text-slate-600">Nursing care, physio, wound checks, and follow-ups until you’re confident again.</p>
+            </div>
+          </div>
+
+          <div class="reveal mt-7 rounded-3xl bg-[color:var(--navy)] p-6 text-white relative overflow-hidden">
+            <div class="absolute inset-0 opacity-40" style="background: radial-gradient(700px 260px at 20% 20%, rgba(255,215,0,.30), transparent 55%), radial-gradient(700px 260px at 90% 20%, rgba(255,215,0,.20), transparent 58%);"></div>
+            <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <p class="text-sm text-white/85">Want a clear next step today?</p>
+                <p class="text-xl font-black">Call now — we’ll guide you calmly and match a plan to your budget.</p>
+              </div>
+              <a href="tel:+919840596418" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[color:var(--gold)] text-[color:var(--navy)] px-5 py-3 font-black hover:brightness-95 btn-shine">
+                <i data-lucide="phone-call" class="h-5 w-5"></i>
+                <span>Call 98405 96418</span>
+              </a>
+            </div>
+          </div>
+        </section>
       </div>
     </section>
 
@@ -572,8 +766,8 @@
                   <i data-lucide="shield-plus" class="h-6 w-6"></i>
                 </span>
                 <div>
-                  <h3 class="text-lg font-extrabold text-slate-900">Infected plate/screw removal &amp; limb-saving care</h3>
-                  <p class="mt-2 text-sm text-slate-600">Focused on infection control, stability restoration, and functional recovery with safe, staged treatment plans.</p>
+                  <h3 class="text-lg font-extrabold text-slate-900">Limb-saving focus with budget-fit planning</h3>
+                  <p class="mt-2 text-sm text-slate-600">We prioritize infection control, stability restoration, and function — with transparent options and staged plans where needed.</p>
                 </div>
               </div>
 
@@ -599,8 +793,8 @@
               <div class="grain relative p-7">
                 <div class="flex items-center justify-between gap-4">
                   <div>
-                    <p class="text-xs font-semibold text-slate-500">What we focus on</p>
-                    <p class="mt-1 text-xl font-black text-[color:var(--navy)]">Precision, safety, and realistic recovery goals</p>
+                    <p class="text-xs font-semibold text-slate-500">What we optimize</p>
+                    <p class="mt-1 text-xl font-black text-[color:var(--navy)]">Safety + alignment + budget clarity</p>
                   </div>
                   <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--gold)] text-[color:var(--navy)]">
                     <i data-lucide="sparkles" class="h-6 w-6"></i>
@@ -613,21 +807,21 @@
                       <i data-lucide="microscope" class="h-4 w-4 text-[color:var(--navy)]"></i>
                       <span>Infection-aware planning</span>
                     </div>
-                    <p class="mt-1 text-sm text-slate-600">Prioritize debridement, cultures, and safe fixation choices.</p>
+                    <p class="mt-1 text-sm text-slate-600">Debridement, cultures, safe fixation choices.</p>
                   </div>
                   <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
                     <div class="flex items-center gap-2 font-semibold text-slate-800">
                       <i data-lucide="ruler" class="h-4 w-4 text-[color:var(--navy)]"></i>
                       <span>Alignment correction</span>
                     </div>
-                    <p class="mt-1 text-sm text-slate-600">Recorrection to restore biomechanics and function.</p>
+                    <p class="mt-1 text-sm text-slate-600">Biomechanics restoration to improve function.</p>
                   </div>
                   <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
                     <div class="flex items-center gap-2 font-semibold text-slate-800">
                       <i data-lucide="hand-heart" class="h-4 w-4 text-[color:var(--navy)]"></i>
                       <span>Reassuring support</span>
                     </div>
-                    <p class="mt-1 text-sm text-slate-600">We explain options clearly and reduce fear.</p>
+                    <p class="mt-1 text-sm text-slate-600">Clear explanations to reduce anxiety.</p>
                   </div>
                   <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
                     <div class="flex items-center gap-2 font-semibold text-slate-800">
@@ -668,7 +862,7 @@
                   <i data-lucide="badge-percent" class="h-6 w-6"></i>
                 </span>
                 <div>
-                  <p class="font-extrabold text-slate-900">Budget-friendly promise</p>
+                  <p class="font-extrabold text-slate-900">Affordable &amp; customized</p>
                   <p class="text-sm text-slate-600">We suggest practical options and explain costs upfront.</p>
                 </div>
               </div>
@@ -683,9 +877,7 @@
             <div class="grid sm:grid-cols-2 gap-4">
               <div class="reveal glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-lg transition-shadow" data-tilt>
                 <div class="flex items-center gap-3">
-                  <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white">
-                    <i data-lucide="stethoscope" class="h-5 w-5"></i>
-                  </span>
+                  <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="stethoscope" class="h-5 w-5"></i></span>
                   <h3 class="font-extrabold text-slate-900">Ortho Consultation at Home</h3>
                 </div>
                 <p class="mt-2 text-sm text-slate-600">Clinical evaluation, guidance, and next-step planning without travel stress.</p>
@@ -693,9 +885,7 @@
 
               <div class="reveal reveal-delay-1 glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-lg transition-shadow" data-tilt>
                 <div class="flex items-center gap-3">
-                  <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white">
-                    <i data-lucide="scan" class="h-5 w-5"></i>
-                  </span>
+                  <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="scan" class="h-5 w-5"></i></span>
                   <h3 class="font-extrabold text-slate-900">X-Ray &amp; Lab Sample Collection</h3>
                 </div>
                 <p class="mt-2 text-sm text-slate-600">Convenient diagnostics coordination for faster decisions.</p>
@@ -703,29 +893,23 @@
 
               <div class="reveal reveal-delay-2 glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-lg transition-shadow" data-tilt>
                 <div class="flex items-center gap-3">
-                  <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white">
-                    <i data-lucide="syringe" class="h-5 w-5"></i>
-                  </span>
-                  <h3 class="font-extrabold text-slate-900">Injection / Traction / Plastering</h3>
+                  <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="syringe" class="h-5 w-5"></i></span>
+                  <h3 class="font-extrabold text-slate-900">Injection / Traction Support</h3>
                 </div>
-                <p class="mt-2 text-sm text-slate-600">Relief-focused support when clinically appropriate, safely delivered.</p>
+                <p class="mt-2 text-sm text-slate-600">Relief-focused care when clinically appropriate.</p>
               </div>
 
               <div class="reveal glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-lg transition-shadow" data-tilt>
                 <div class="flex items-center gap-3">
-                  <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white">
-                    <i data-lucide="cast" class="h-5 w-5"></i>
-                  </span>
-                  <h3 class="font-extrabold text-slate-900">Casting &amp; Immobilization</h3>
+                  <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="cast" class="h-5 w-5"></i></span>
+                  <h3 class="font-extrabold text-slate-900">Plastering / Casting / Fiberglass</h3>
                 </div>
-                <p class="mt-2 text-sm text-slate-600">Plastering/casting guidance and care for safe healing.</p>
+                <p class="mt-2 text-sm text-slate-600">Immobilization and guidance for safe healing.</p>
               </div>
 
               <div class="reveal reveal-delay-1 glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-lg transition-shadow" data-tilt>
                 <div class="flex items-center gap-3">
-                  <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white">
-                    <i data-lucide="droplets" class="h-5 w-5"></i>
-                  </span>
+                  <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="droplets" class="h-5 w-5"></i></span>
                   <h3 class="font-extrabold text-slate-900">Wound Dressing</h3>
                 </div>
                 <p class="mt-2 text-sm text-slate-600">Gentle, sterile dressing support with recovery monitoring.</p>
@@ -733,12 +917,10 @@
 
               <div class="reveal reveal-delay-2 glow-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-lg transition-shadow" data-tilt>
                 <div class="flex items-center gap-3">
-                  <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white">
-                    <i data-lucide="scissors" class="h-5 w-5"></i>
-                  </span>
+                  <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="scissors" class="h-5 w-5"></i></span>
                   <h3 class="font-extrabold text-slate-900">Suture Removal</h3>
                 </div>
-                <p class="mt-2 text-sm text-slate-600">Safe, timely removal and aftercare instructions to prevent issues.</p>
+                <p class="mt-2 text-sm text-slate-600">Safe, timely removal and aftercare instructions.</p>
               </div>
             </div>
 
@@ -746,8 +928,8 @@
               <div class="absolute inset-0 opacity-45" style="background: radial-gradient(700px 260px at 20% 20%, rgba(255,215,0,.30), transparent 55%), radial-gradient(700px 260px at 90% 20%, rgba(255,215,0,.20), transparent 58%);"></div>
               <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                  <p class="text-sm text-white/85">Need urgent guidance?</p>
-                  <p class="text-xl font-black">Call us any time for quick next-step advice.</p>
+                  <p class="text-sm text-white/85">Need home service today?</p>
+                  <p class="text-xl font-black">Call any time for quick scheduling and budget clarity.</p>
                 </div>
                 <a href="tel:+919840596418" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[color:var(--gold)] text-[color:var(--navy)] px-5 py-3 font-black hover:brightness-95 btn-shine">
                   <i data-lucide="phone-call" class="h-5 w-5"></i>
@@ -771,27 +953,21 @@
 
             <ul class="reveal reveal-delay-2 mt-6 grid gap-3">
               <li class="glow-card flex items-start gap-3 rounded-2xl border border-slate-200 bg-white p-4" data-tilt>
-                <span class="mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[color:var(--navy)] text-white">
-                  <i data-lucide="heart-handshake" class="h-5 w-5"></i>
-                </span>
+                <span class="mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[color:var(--navy)] text-white"><i data-lucide="heart-handshake" class="h-5 w-5"></i></span>
                 <div>
                   <p class="font-extrabold text-slate-900">Counselling &amp; reassurance</p>
                   <p class="text-sm text-slate-600">Clear explanations to reduce anxiety and improve adherence.</p>
                 </div>
               </li>
               <li class="glow-card flex items-start gap-3 rounded-2xl border border-slate-200 bg-white p-4" data-tilt>
-                <span class="mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[color:var(--navy)] text-white">
-                  <i data-lucide="route" class="h-5 w-5"></i>
-                </span>
+                <span class="mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[color:var(--navy)] text-white"><i data-lucide="route" class="h-5 w-5"></i></span>
                 <div>
                   <p class="font-extrabold text-slate-900">Guidance &amp; follow-up recovery</p>
                   <p class="text-sm text-slate-600">Milestones, wound checks, movement goals, and safety instructions.</p>
                 </div>
               </li>
               <li class="glow-card flex items-start gap-3 rounded-2xl border border-slate-200 bg-white p-4" data-tilt>
-                <span class="mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[color:var(--navy)] text-white">
-                  <i data-lucide="dumbbell" class="h-5 w-5"></i>
-                </span>
+                <span class="mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[color:var(--navy)] text-white"><i data-lucide="dumbbell" class="h-5 w-5"></i></span>
                 <div>
                   <p class="font-extrabold text-slate-900">Customized physiotherapy</p>
                   <p class="text-sm text-slate-600">Practical rehab plans for athletes and daily-life movement goals.</p>
@@ -799,9 +975,7 @@
               </li>
             </ul>
 
-            <p class="reveal reveal-delay-3 mt-6 text-slate-700">
-              Our expert team of doctors provides <span class="font-black text-[color:var(--navy)]">100% budget-friendly solutions</span> tailored to your condition and timeline.
-            </p>
+            <p class="reveal reveal-delay-3 mt-6 text-slate-700">Expert team of doctors providing <span class="font-black text-[color:var(--navy)]">100% budget-friendly solutions</span> tailored to your condition and timeline.</p>
           </div>
 
           <div class="lg:col-span-6">
@@ -812,9 +986,7 @@
                 <div class="absolute bottom-0 left-0 right-0 p-5">
                   <div class="rounded-2xl bg-white/92 p-4 border border-white">
                     <div class="flex items-center gap-3">
-                      <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[color:var(--gold)] text-[color:var(--navy)]">
-                        <i data-lucide="target" class="h-5 w-5"></i>
-                      </span>
+                      <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[color:var(--gold)] text-[color:var(--navy)]"><i data-lucide="target" class="h-5 w-5"></i></span>
                       <div>
                         <p class="text-xs font-semibold text-slate-500">Recovery promise</p>
                         <p class="text-sm font-black text-[color:var(--navy)]">Step-by-step plan for stronger, safer movement</p>
@@ -868,30 +1040,26 @@
             <div class="reveal rounded-2xl border border-slate-200 bg-white p-5" data-faq>
               <button type="button" class="w-full flex items-start justify-between gap-4 text-left" data-faq-btn>
                 <div>
-                  <p class="font-extrabold text-slate-900">Do you provide home visits in Chennai?</p>
-                  <p class="mt-1 text-sm text-slate-600">Yes — including Royapettah, Alwarpet, Mylapore, Teynampet, Adyar &amp; Triplicane.</p>
+                  <p class="font-extrabold text-slate-900">Will you match the plan to my budget?</p>
+                  <p class="mt-1 text-sm text-slate-600">Yes — we explain options and customize safely.</p>
                 </div>
-                <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 border border-slate-200">
-                  <i data-lucide="chevron-down" class="h-5 w-5"></i>
-                </span>
+                <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 border border-slate-200"><i data-lucide="chevron-down" class="h-5 w-5"></i></span>
               </button>
               <div class="mt-3 hidden" data-faq-panel>
-                <p class="text-sm text-slate-700">Call <a class="font-extrabold text-[color:var(--navy)] hover:underline" href="tel:+919840596418">98405 96418</a> to check availability and share your location. We’ll guide you on the best next step.</p>
+                <p class="text-sm text-slate-700">We discuss alternatives where possible and keep pricing transparent. Your safety remains the priority.</p>
               </div>
             </div>
 
             <div class="reveal reveal-delay-1 rounded-2xl border border-slate-200 bg-white p-5" data-faq>
               <button type="button" class="w-full flex items-start justify-between gap-4 text-left" data-faq-btn>
                 <div>
-                  <p class="font-extrabold text-slate-900">Is your treatment really budget-friendly?</p>
-                  <p class="mt-1 text-sm text-slate-600">We prioritize safe, practical options and explain costs upfront.</p>
+                  <p class="font-extrabold text-slate-900">Do you provide home visits in Chennai?</p>
+                  <p class="mt-1 text-sm text-slate-600">Yes — Royapettah, Alwarpet, Mylapore, Teynampet, Adyar &amp; Triplicane.</p>
                 </div>
-                <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 border border-slate-200">
-                  <i data-lucide="chevron-down" class="h-5 w-5"></i>
-                </span>
+                <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 border border-slate-200"><i data-lucide="chevron-down" class="h-5 w-5"></i></span>
               </button>
               <div class="mt-3 hidden" data-faq-panel>
-                <p class="text-sm text-slate-700">You’ll get a clear plan with alternatives where possible — without compromising safety. We’ll help you choose what fits your needs and budget.</p>
+                <p class="text-sm text-slate-700">Call <a class="font-extrabold text-[color:var(--navy)] hover:underline" href="tel:+919840596418">98405 96418</a> and share your location. We’ll guide you on the best next step.</p>
               </div>
             </div>
 
@@ -899,11 +1067,9 @@
               <button type="button" class="w-full flex items-start justify-between gap-4 text-left" data-faq-btn>
                 <div>
                   <p class="font-extrabold text-slate-900">When should I call urgently?</p>
-                  <p class="mt-1 text-sm text-slate-600">Suspected fracture, severe pain, deformity, or sudden weakness/numbness.</p>
+                  <p class="mt-1 text-sm text-slate-600">Suspected fracture, severe pain, deformity, weakness/numbness.</p>
                 </div>
-                <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 border border-slate-200">
-                  <i data-lucide="chevron-down" class="h-5 w-5"></i>
-                </span>
+                <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 border border-slate-200"><i data-lucide="chevron-down" class="h-5 w-5"></i></span>
               </button>
               <div class="mt-3 hidden" data-faq-panel>
                 <p class="text-sm text-slate-700">Please call immediately. We’ll advise safe next steps and help you avoid actions that could worsen injury.</p>
@@ -915,20 +1081,17 @@
       </div>
     </section>
 
-
     <!-- Locations & Contact -->
     <section id="contact" class="bg-white">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
         <div class="grid lg:grid-cols-12 gap-10">
           <div class="lg:col-span-5">
             <h2 class="reveal text-3xl sm:text-4xl font-black text-[color:var(--navy)]">Serving Chennai • Contact Us</h2>
-            <p class="reveal reveal-delay-1 mt-4 text-slate-600">Tell us what you’re facing. We’ll guide you calmly and clearly — with budget-friendly options.</p>
+            <p class="reveal reveal-delay-1 mt-4 text-slate-600">Tell us what you’re facing. We’ll guide you calmly and clearly — with a plan customized to your budget.</p>
 
             <div class="reveal reveal-delay-2 mt-6 rounded-3xl border border-slate-200 bg-slate-50 p-6 glow-card" data-tilt>
               <div class="flex items-start gap-3">
-                <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white">
-                  <i data-lucide="map-pin" class="h-5 w-5"></i>
-                </span>
+                <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white"><i data-lucide="map-pin" class="h-5 w-5"></i></span>
                 <div>
                   <p class="font-extrabold text-slate-900">Clinic / Service Base</p>
                   <p class="mt-1 text-sm text-slate-600">B.V. Naicken Street, Triplicane, Chennai - 600005 <span class="text-slate-500">(Near Big Street Police Quarters)</span></p>
@@ -945,10 +1108,7 @@
               </div>
 
               <div class="mt-5 grid gap-2">
-                <a class="inline-flex items-center gap-2 font-extrabold text-[color:var(--navy)]" href="tel:+919840596418">
-                  <i data-lucide="phone" class="h-4 w-4"></i>
-                  <span>Call: 98405 96418</span>
-                </a>
+                <a class="inline-flex items-center gap-2 font-extrabold text-[color:var(--navy)]" href="tel:+919840596418"><i data-lucide="phone" class="h-4 w-4"></i><span>Call: 98405 96418</span></a>
                 <p class="text-sm text-slate-600">Primary Contact: <span class="font-semibold">Mrs. Jamuna Sivalingam</span> &amp; <span class="font-semibold">Mr. Sivalingam</span></p>
               </div>
             </div>
@@ -960,9 +1120,7 @@
                   <p class="text-sm font-black text-slate-900">Interactive Map</p>
                   <p class="text-xs text-slate-500">Placeholder (embed Google Maps here if needed)</p>
                 </div>
-                <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[color:var(--gold)] text-[color:var(--navy)]">
-                  <i data-lucide="map" class="h-5 w-5"></i>
-                </span>
+                <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[color:var(--gold)] text-[color:var(--navy)]"><i data-lucide="map" class="h-5 w-5"></i></span>
               </div>
               <div class="h-56 bg-gradient-to-br from-slate-50 to-slate-100 relative">
                 <div class="absolute inset-0" style="background-image: radial-gradient(circle at 20px 20px, rgba(0,33,71,.10) 1px, transparent 1px); background-size: 24px 24px;"></div>
@@ -974,9 +1132,7 @@
                 <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                   <div class="h-16 w-16 rounded-full bg-[color:var(--gold)]/35 blur"></div>
                   <div class="absolute inset-0 flex items-center justify-center">
-                    <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white shadow-lg">
-                      <i data-lucide="map-pin" class="h-5 w-5"></i>
-                    </span>
+                    <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[color:var(--navy)] text-white shadow-lg"><i data-lucide="map-pin" class="h-5 w-5"></i></span>
                   </div>
                 </div>
               </div>
@@ -987,7 +1143,7 @@
             <div class="reveal rounded-3xl border border-slate-200 bg-white shadow-sm overflow-hidden">
               <div class="p-7 sm:p-8 bg-gradient-to-br from-white to-[color:var(--gold)]/20">
                 <h3 class="text-xl sm:text-2xl font-black text-[color:var(--navy)]">Request a Call Back / Book a Home Visit</h3>
-                <p class="mt-2 text-sm text-slate-600">We’ll respond quickly. For urgent concerns, please call directly.</p>
+                <p class="mt-2 text-sm text-slate-600">We’ll respond quickly. For urgent symptoms, please call directly.</p>
               </div>
 
               <form id="leadForm" class="p-7 sm:p-8 grid gap-4" novalidate>
@@ -1014,11 +1170,14 @@
                     <label class="text-sm font-semibold text-slate-800" for="service">Service Needed</label>
                     <select id="service" name="service" class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm focus:border-[color:var(--navy)]">
                       <option value="Home Consultation">Home Consultation</option>
-                      <option value="Fracture / Injury">Fracture / Injury</option>
+                      <option value="Gym / Sports Injury">Gym / Sports Injury</option>
+                      <option value="Spine Issue / Surgery">Spine Issue / Surgery</option>
                       <option value="Knee Pain / Replacement">Knee Pain / Replacement</option>
-                      <option value="Spine Issue">Spine Issue</option>
+                      <option value="Hip Injury Care">Hip Injury Care</option>
+                      <option value="Complex Fracture Management">Complex Fracture Management</option>
+                      <option value="Recorrection / Failed Surgery">Recorrection / Failed Surgery</option>
                       <option value="Wound Dressing / Suture Removal">Wound Dressing / Suture Removal</option>
-                      <option value="Surgical Management / Recorrection">Surgical Management / Recorrection</option>
+                      <option value="Nursing / Physiotherapy">Nursing / Physiotherapy</option>
                       <option value="Other">Other</option>
                     </select>
                   </div>
@@ -1030,45 +1189,32 @@
                     <input id="preferredTime" name="preferredTime" type="text" class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm focus:border-[color:var(--navy)]" placeholder="e.g., Today evening / Tomorrow morning" />
                   </div>
                   <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                    <p class="text-sm font-extrabold text-slate-900">Need fastest help?</p>
-                    <a href="tel:+919840596418" class="mt-2 inline-flex items-center gap-2 font-black text-[color:var(--navy)] hover:underline">
-                      <i data-lucide="phone" class="h-4 w-4"></i>
-                      <span>Call 98405 96418</span>
-                    </a>
+                    <p class="text-sm font-extrabold text-slate-900">Fastest help</p>
+                    <a href="tel:+919840596418" class="mt-2 inline-flex items-center gap-2 font-black text-[color:var(--navy)] hover:underline"><i data-lucide="phone" class="h-4 w-4"></i><span>Call 98405 96418</span></a>
                     <p class="mt-1 text-xs text-slate-600">For fractures/severe pain, call directly.</p>
                   </div>
                 </div>
 
                 <div>
                   <label class="text-sm font-semibold text-slate-800" for="message">Message</label>
-                  <textarea id="message" name="message" required rows="5" class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm focus:border-[color:var(--navy)]" placeholder="Tell us your symptoms, duration, and whether you need a home visit."></textarea>
+                  <textarea id="message" name="message" required rows="5" class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm focus:border-[color:var(--navy)]" placeholder="Tell us symptoms, duration, and any budget comfort range if you wish."></textarea>
                   <p class="mt-1 text-xs text-red-600 hidden" data-error-for="message">Please share a short message about your concern.</p>
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-                  <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[color:var(--navy)] text-white px-6 py-3 font-semibold hover:opacity-95 btn-shine">
-                    <i data-lucide="send" class="h-5 w-5"></i>
-                    <span>Submit Request</span>
-                  </button>
-                  <div class="text-sm text-slate-600">
-                    Or call directly: <a class="font-black text-[color:var(--navy)] hover:underline" href="tel:+919840596418">98405 96418</a>
-                  </div>
+                  <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[color:var(--navy)] text-white px-6 py-3 font-semibold hover:opacity-95 btn-shine"><i data-lucide="send" class="h-5 w-5"></i><span>Submit Request</span></button>
+                  <div class="text-sm text-slate-600">Or call directly: <a class="font-black text-[color:var(--navy)] hover:underline" href="tel:+919840596418">98405 96418</a></div>
                 </div>
 
                 <div id="formStatus" class="hidden rounded-2xl border p-4 text-sm"></div>
 
                 <div id="whatsAppBox" class="hidden rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
                   <div class="flex items-start gap-3">
-                    <span class="mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white">
-                      <i data-lucide="message-circle" class="h-5 w-5"></i>
-                    </span>
+                    <span class="mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white"><i data-lucide="message-circle" class="h-5 w-5"></i></span>
                     <div class="min-w-0">
-                      <p class="font-black">Want to send details via WhatsApp?</p>
+                      <p class="font-black">Send details via WhatsApp?</p>
                       <p class="text-emerald-800/90">Tap below to open WhatsApp with your message prefilled.</p>
-                      <a id="waLink" class="mt-3 inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 text-white px-4 py-2 font-black hover:brightness-95" target="_blank" rel="noopener" href="#">
-                        <i data-lucide="send" class="h-4 w-4"></i>
-                        <span>Open WhatsApp</span>
-                      </a>
+                      <a id="waLink" class="mt-3 inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 text-white px-4 py-2 font-black hover:brightness-95" target="_blank" rel="noopener" href="#"><i data-lucide="send" class="h-4 w-4"></i><span>Open WhatsApp</span></a>
                     </div>
                   </div>
                 </div>
@@ -1089,24 +1235,19 @@
       <div class="grid md:grid-cols-3 gap-10">
         <div>
           <div class="inline-flex items-center gap-2">
-            <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
-              <i data-lucide="bone" class="h-5 w-5 text-[color:var(--gold)]"></i>
-            </span>
+            <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/10"><i data-lucide="bone" class="h-5 w-5 text-[color:var(--gold)]"></i></span>
             <div>
               <p class="font-black tracking-wide">S2J ORTHO</p>
               <p class="text-sm text-white/75">Health Services</p>
             </div>
           </div>
-          <p class="mt-4 text-sm text-white/80 max-w-sm">Professional, empathetic orthopedic care — home visits, recovery support, and surgical excellence with budget-friendly solutions.</p>
+          <p class="mt-4 text-sm text-white/80 max-w-sm">Expert orthopedic care with a strict focus on budget-friendly, transparent options — home visits, recovery support, and surgical management.</p>
         </div>
 
         <div>
           <p class="font-black">Contact</p>
           <div class="mt-3 grid gap-2 text-sm">
-            <a class="inline-flex items-center gap-2 text-white/90 hover:text-white" href="tel:+919840596418">
-              <i data-lucide="phone" class="h-4 w-4"></i>
-              <span>98405 96418</span>
-            </a>
+            <a class="inline-flex items-center gap-2 text-white/90 hover:text-white" href="tel:+919840596418"><i data-lucide="phone" class="h-4 w-4"></i><span>98405 96418</span></a>
             <p class="text-white/80">Primary Contact: Mrs. Jamuna Sivalingam &amp; Mr. Sivalingam</p>
             <p class="text-white/80">B.V. Naicken Street, Triplicane, Chennai - 600005</p>
           </div>
@@ -1115,18 +1256,10 @@
         <div>
           <p class="font-black">Connect</p>
           <div class="mt-3 flex items-center gap-3">
-            <a class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 hover:bg-white/15" href="#" aria-label="Facebook">
-              <i data-lucide="facebook" class="h-5 w-5"></i>
-            </a>
-            <a class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 hover:bg-white/15" href="#" aria-label="Instagram">
-              <i data-lucide="instagram" class="h-5 w-5"></i>
-            </a>
-            <a class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 hover:bg-white/15" href="#" aria-label="YouTube">
-              <i data-lucide="youtube" class="h-5 w-5"></i>
-            </a>
-            <a class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 hover:bg-white/15" href="#" aria-label="WhatsApp" id="footerWhatsApp">
-              <i data-lucide="message-circle" class="h-5 w-5"></i>
-            </a>
+            <a class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 hover:bg-white/15" href="#" aria-label="Facebook"><i data-lucide="facebook" class="h-5 w-5"></i></a>
+            <a class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 hover:bg-white/15" href="#" aria-label="Instagram"><i data-lucide="instagram" class="h-5 w-5"></i></a>
+            <a class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 hover:bg-white/15" href="#" aria-label="YouTube"><i data-lucide="youtube" class="h-5 w-5"></i></a>
+            <a class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 hover:bg-white/15" href="#" aria-label="WhatsApp" id="footerWhatsApp"><i data-lucide="message-circle" class="h-5 w-5"></i></a>
           </div>
           <p class="mt-4 text-xs text-white/70">Tip: Replace social links with your official profiles.</p>
         </div>
@@ -1156,17 +1289,13 @@
         <div class="absolute inset-0 opacity-40" style="background: radial-gradient(700px 220px at 20% 20%, rgba(255,215,0,.30), transparent 55%), radial-gradient(700px 220px at 80% 20%, rgba(255,215,0,.18), transparent 58%);"></div>
         <div class="relative flex items-center justify-between gap-3 p-3">
           <div class="flex items-center gap-3">
-            <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10">
-              <i data-lucide="phone-call" class="h-5 w-5 text-[color:var(--gold)]"></i>
-            </span>
+            <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10"><i data-lucide="phone-call" class="h-5 w-5 text-[color:var(--gold)]"></i></span>
             <div class="leading-tight">
               <p class="text-sm font-black">Need help now?</p>
               <p class="text-xs text-white/80">Tap to call S2J Ortho</p>
             </div>
           </div>
-          <a href="tel:+919840596418" class="pulse btn-shine inline-flex items-center justify-center rounded-2xl bg-[color:var(--gold)] text-[color:var(--navy)] px-4 py-3 font-black">
-            Call Now
-          </a>
+          <a href="tel:+919840596418" class="pulse btn-shine inline-flex items-center justify-center rounded-2xl bg-[color:var(--gold)] text-[color:var(--navy)] px-4 py-3 font-black">Call Now</a>
         </div>
       </div>
     </div>
@@ -1199,16 +1328,10 @@
 
           <div class="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-5">
             <p class="text-sm font-black text-slate-900">Next step</p>
-            <p class="mt-1 text-sm text-slate-700">Share your symptoms and duration. For urgent pain or suspected fracture, please call immediately.</p>
+            <p class="mt-1 text-sm text-slate-700">Share your symptoms, duration, and any budget comfort range if you wish. For urgent pain or suspected fracture, please call immediately.</p>
             <div class="mt-4 flex flex-col sm:flex-row gap-3">
-              <a href="tel:+919840596418" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[color:var(--navy)] text-white px-5 py-3 font-semibold hover:opacity-95 btn-shine">
-                <i data-lucide="phone-call" class="h-5 w-5"></i>
-                <span>Call 98405 96418</span>
-              </a>
-              <a href="#contact" id="modalBook" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-white text-[color:var(--navy)] px-5 py-3 font-semibold border border-slate-200 hover:bg-slate-50">
-                <i data-lucide="calendar-check" class="h-5 w-5"></i>
-                <span>Book Home Visit</span>
-              </a>
+              <a href="tel:+919840596418" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[color:var(--navy)] text-white px-5 py-3 font-semibold hover:opacity-95 btn-shine"><i data-lucide="phone-call" class="h-5 w-5"></i><span>Call 98405 96418</span></a>
+              <a href="#contact" id="modalBook" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-white text-[color:var(--navy)] px-5 py-3 font-semibold border border-slate-200 hover:bg-slate-50"><i data-lucide="calendar-check" class="h-5 w-5"></i><span>Book / Request Call</span></a>
             </div>
           </div>
         </div>
@@ -1219,12 +1342,10 @@
   <!-- Toast -->
   <div id="toast" class="fixed top-20 right-4 z-[90] hidden">
     <div class="rounded-2xl border border-slate-200 bg-white shadow-lg px-4 py-3 text-sm text-slate-800 flex items-start gap-3">
-      <span class="mt-0.5 inline-flex h-8 w-8 items-center justify-center rounded-xl bg-[color:var(--navy)] text-white">
-        <i data-lucide="check" class="h-4 w-4"></i>
-      </span>
+      <span class="mt-0.5 inline-flex h-8 w-8 items-center justify-center rounded-xl bg-[color:var(--navy)] text-white"><i data-lucide="check" class="h-4 w-4"></i></span>
       <div>
-        <p class="font-black text-[color:var(--navy)]">Request received</p>
-        <p class="text-slate-600">We’ll contact you soon. For urgent concerns, call <a class="font-semibold text-[color:var(--navy)] hover:underline" href="tel:+919840596418">98405 96418</a>.</p>
+        <p class="font-black text-[color:var(--navy)]">Saved to your message</p>
+        <p class="text-slate-600">You can submit the form or WhatsApp us anytime.</p>
       </div>
     </div>
   </div>
@@ -1238,7 +1359,108 @@
       return `${base}?text=${msg}`;
     }
 
-    // Initialize icons
+    // --- Premium live background canvas (subtle particle drift) ---
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let bg = { canvas:null, ctx:null, w:0, h:0, particles:[], raf:null };
+
+    function themePalette(theme){
+      switch(theme){
+        case 'midnight':
+          return { a:[99,102,241], b:[255,215,0], link:'rgba(255,255,255,.18)' };
+        case 'sunrise':
+          return { a:[59,130,246], b:[251,191,36], link:'rgba(0,33,71,.10)' };
+        case 'clinic':
+          return { a:[0,33,71], b:[255,215,0], link:'rgba(0,33,71,.09)' };
+        case 'aurora':
+        default:
+          return { a:[0,33,71], b:[255,215,0], link:'rgba(0,33,71,.12)' };
+      }
+    }
+
+    function resizeBg(){
+      if (!bg.canvas) return;
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      bg.w = bg.canvas.clientWidth;
+      bg.h = bg.canvas.clientHeight;
+      bg.canvas.width = Math.floor(bg.w * dpr);
+      bg.canvas.height = Math.floor(bg.h * dpr);
+      bg.ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+
+    function initParticles(){
+      const count = Math.max(28, Math.min(80, Math.floor((bg.w * bg.h) / 26000)));
+      bg.particles = Array.from({length: count}, () => ({
+        x: Math.random() * bg.w,
+        y: Math.random() * bg.h,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: (Math.random() - 0.5) * 0.25,
+        r: 1 + Math.random() * 2.2
+      }));
+    }
+
+    function drawBg(){
+      if (!bg.ctx) return;
+      const theme = document.body.getAttribute('data-theme') || 'aurora';
+      const pal = themePalette(theme);
+      const ctx = bg.ctx;
+
+      ctx.clearRect(0,0,bg.w,bg.h);
+
+      // soft gradient wash
+      const grd = ctx.createLinearGradient(0,0,bg.w,bg.h);
+      grd.addColorStop(0, `rgba(${pal.a[0]},${pal.a[1]},${pal.a[2]},.08)`);
+      grd.addColorStop(1, `rgba(${pal.b[0]},${pal.b[1]},${pal.b[2]},.08)`);
+      ctx.fillStyle = grd;
+      ctx.fillRect(0,0,bg.w,bg.h);
+
+      // particles + links
+      for (let i=0;i<bg.particles.length;i++){
+        const p = bg.particles[i];
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < -20) p.x = bg.w + 20;
+        if (p.x > bg.w + 20) p.x = -20;
+        if (p.y < -20) p.y = bg.h + 20;
+        if (p.y > bg.h + 20) p.y = -20;
+
+        // draw links
+        for (let j=i+1;j<bg.particles.length;j++){
+          const q = bg.particles[j];
+          const dx = p.x - q.x;
+          const dy = p.y - q.y;
+          const d = Math.hypot(dx,dy);
+          if (d < 120){
+            ctx.strokeStyle = pal.link;
+            ctx.globalAlpha = (1 - d/120) * 0.45;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(p.x,p.y);
+            ctx.lineTo(q.x,q.y);
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+          }
+        }
+
+        ctx.fillStyle = `rgba(${pal.a[0]},${pal.a[1]},${pal.a[2]},.18)`;
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fill();
+      }
+
+      bg.raf = requestAnimationFrame(drawBg);
+    }
+
+    function startBg(){
+      if (prefersReduced) return;
+      bg.canvas = document.getElementById('bgCanvas');
+      if (!bg.canvas) return;
+      bg.ctx = bg.canvas.getContext('2d');
+      resizeBg();
+      initParticles();
+      cancelAnimationFrame(bg.raf);
+      drawBg();
+    }
+
+    // Initialize icons + year + WhatsApp links + theme
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
 
@@ -1248,11 +1470,47 @@
       // WhatsApp CTAs
       const waText = 'Hello S2J Ortho, I would like to book a home visit / consultation.';
       const waLink = buildWhatsAppLink(waText);
-      const floatWa = document.getElementById('whatsAppFloat');
-      const footerWa = document.getElementById('footerWhatsApp');
-      floatWa.setAttribute('href', waLink);
-      footerWa.setAttribute('href', waLink);
+      document.getElementById('whatsAppFloat')?.setAttribute('href', waLink);
+      document.getElementById('footerWhatsApp')?.setAttribute('href', waLink);
+
+      // Theme init
+      const saved = localStorage.getItem('s2j_theme');
+      if (saved) document.body.setAttribute('data-theme', saved);
+
+      // Theme UI
+      const themeBtn = document.getElementById('themeBtn');
+      const themeMenu = document.getElementById('themeMenu');
+      themeBtn?.addEventListener('click', () => {
+        const open = !themeMenu.classList.contains('hidden');
+        themeMenu.classList.toggle('hidden');
+        themeBtn.setAttribute('aria-expanded', String(!open));
+      });
+      document.querySelectorAll('.theme-opt').forEach(b => {
+        b.addEventListener('click', () => {
+          const t = b.getAttribute('data-theme');
+          if (!t) return;
+          document.body.setAttribute('data-theme', t);
+          localStorage.setItem('s2j_theme', t);
+          themeMenu.classList.add('hidden');
+          themeBtn?.setAttribute('aria-expanded', 'false');
+          startBg();
+        });
+      });
+      document.addEventListener('click', (e) => {
+        if (!themeMenu || !themeBtn) return;
+        if (themeMenu.contains(e.target) || themeBtn.contains(e.target)) return;
+        themeMenu.classList.add('hidden');
+        themeBtn.setAttribute('aria-expanded', 'false');
+      });
+
+      startBg();
     });
+
+    window.addEventListener('resize', () => {
+      if (!bg.canvas) return;
+      resizeBg();
+      initParticles();
+    }, { passive: true });
 
     // Mobile menu
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -1281,7 +1539,6 @@
       a.addEventListener('click', (e) => {
         const href = a.getAttribute('href');
         if (!href || href === '#') return;
-        // allow modal internal anchor click
         e.preventDefault();
         history.pushState(null, '', href);
         scrollToHash(href);
@@ -1303,7 +1560,6 @@
     // Scroll progress + toTop
     const progress = document.getElementById('scrollProgress');
     const toTop = document.getElementById('toTop');
-
     function onScroll(){
       const doc = document.documentElement;
       const scrollTop = doc.scrollTop || document.body.scrollTop;
@@ -1323,7 +1579,6 @@
     // Active nav highlighting
     const sectionIds = ['#services', '#surgical', '#homecare', '#recovery', '#contact'];
     const navLinks = Array.from(document.querySelectorAll('[data-section-link]'));
-
     const sectionObserver = new IntersectionObserver((entries) => {
       let best = null;
       for (const entry of entries) {
@@ -1332,14 +1587,9 @@
         }
       }
       if (!best) return;
-
       const id = `#${best.target.id}`;
-      navLinks.forEach(l => {
-        const active = l.getAttribute('href') === id;
-        l.classList.toggle('active', active);
-      });
+      navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === id));
     }, { threshold: [0.18, 0.25, 0.35, 0.5] });
-
     sectionIds.forEach(sel => {
       const el = document.querySelector(sel);
       if (el) sectionObserver.observe(el);
@@ -1356,7 +1606,6 @@
         const duration = 900;
         const start = performance.now();
         const from = 0;
-
         function tick(now){
           const t = Math.min(1, (now - start) / duration);
           const eased = 1 - Math.pow(1 - t, 3);
@@ -1365,16 +1614,13 @@
           if (t < 1) requestAnimationFrame(tick);
         }
         requestAnimationFrame(tick);
-
         counterObserver.unobserve(el);
       });
     }, { threshold: 0.25 });
     counters.forEach(c => counterObserver.observe(c));
 
     // Tilt micro-interaction (desktop only)
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const finePointer = window.matchMedia('(pointer: fine)').matches;
-
     if (!prefersReduced && finePointer) {
       document.querySelectorAll('[data-tilt]').forEach(card => {
         let raf = null;
@@ -1404,7 +1650,7 @@
       });
     }
 
-    // Quick chips -> fill message & scroll to form
+    // Quick chips -> fill message
     document.querySelectorAll('.quick-chip').forEach(btn => {
       btn.addEventListener('click', () => {
         const chip = btn.getAttribute('data-chip') || '';
@@ -1413,7 +1659,6 @@
           const existing = msg.value.trim();
           msg.value = existing ? `${existing}\n- ${chip}` : `- ${chip}`;
         }
-        // Provide a subtle confirmation
         const toast = document.getElementById('toast');
         toast.classList.remove('hidden');
         setTimeout(() => toast.classList.add('hidden'), 1800);
@@ -1426,14 +1671,13 @@
       const panel = item.querySelector('[data-faq-panel]');
       btn?.addEventListener('click', () => {
         const open = !panel.classList.contains('hidden');
-        // close others
         document.querySelectorAll('[data-faq-panel]').forEach(p => p.classList.add('hidden'));
         if (open) panel.classList.add('hidden');
         else panel.classList.remove('hidden');
       });
     });
 
-    // Service modal
+    // Service modal (expanded for categorized portfolio)
     const modal = document.getElementById('serviceModal');
     const modalTitle = document.getElementById('modalTitle');
     const modalSubtitle = document.getElementById('modalSubtitle');
@@ -1442,71 +1686,170 @@
     const modalBook = document.getElementById('modalBook');
 
     const SERVICE_DETAILS = {
-      fractures: {
-        title: 'Fractures & Injuries',
-        subtitle: 'Fast, safe next steps for sports injuries, falls, and suspected fractures.',
+      spineSurgery: {
+        title: 'Spine Surgeries',
+        subtitle: 'Safety-first evaluation, clear imaging decisions, and recovery planning that fits your budget.',
         bullets: [
-          'Pain control & safe immobilization guidance',
-          'X-ray coordination and clear treatment plan',
-          'Wound care & follow-up checks (as needed)',
-          'Budget-first options explained upfront'
+          'Red-flag check: weakness/numbness/fever',
+          'Imaging guidance (only when needed)',
+          'Surgery vs. non-surgery decision clarity',
+          'Budget-fit options explained upfront'
         ],
-        servicePrefill: 'Fracture / Injury'
+        servicePrefill: 'Spine Issue / Surgery'
       },
-      knee: {
+      kneeReplace: {
         title: 'Knee Replacements',
-        subtitle: 'Evaluation, decision support, and rehab coordination — with confidence.',
+        subtitle: 'Clear indications, realistic outcomes, and a step-by-step rehab path.',
         bullets: [
           'When replacement is needed vs. when it’s not',
-          'Pre-op planning & post-op milestones',
-          'Pain, swelling & walking progression guidance',
-          'Budget-friendly pathway discussion'
+          'Pre-op planning & budgeting clarity',
+          'Walking, swelling & pain milestones',
+          'Physio and follow-up coordination'
         ],
         servicePrefill: 'Knee Pain / Replacement'
       },
-      spine: {
-        title: 'Spine Injuries',
-        subtitle: 'Careful assessment focused on nerves, function, and safe recovery.',
+      hipCare: {
+        title: 'Hip Injury Care',
+        subtitle: 'From pain control to mobility planning — with clear next steps.',
         bullets: [
-          'Red-flag symptom guidance (numbness/weakness)',
-          'Posture, activity and pain-management advice',
-          'Imaging coordination when needed',
-          'Clear do’s & don’ts to prevent worsening'
+          'Fall/trauma assessment guidance',
+          'Mobility and safety precautions',
+          'Imaging coordination where appropriate',
+          'Budget-first plan discussion'
         ],
-        servicePrefill: 'Spine Issue'
+        servicePrefill: 'Hip Injury Care'
       },
-      dislocation: {
-        title: 'Dislocations',
-        subtitle: 'Stability-first care and prevention of recurrence.',
+      complexFracture: {
+        title: 'Complex Fracture Management',
+        subtitle: 'Alignment, stability, and healing protection — with safe guidance.',
         bullets: [
-          'Safe next-step guidance for acute pain',
-          'Immobilization and rehab coordination',
-          'Instability risk explanation & prevention plan',
-          'Follow-up checks to ensure healing'
+          'Immobilization and pain control steps',
+          'X-ray coordination and treatment planning',
+          'Wound care and follow-up reviews',
+          'Budget-friendly options explained'
         ],
-        servicePrefill: 'Fracture / Injury'
+        servicePrefill: 'Complex Fracture Management'
       },
-      surgeries: {
-        title: 'All Types of Ortho Surgeries',
-        subtitle: 'From planning and budgeting to follow-up recovery — end-to-end support.',
+      infectedMalunion: {
+        title: 'Infected Malunion Management',
+        subtitle: 'Staged treatment to control infection and restore function.',
         bullets: [
-          'Second opinion and decision support',
-          'Pre-op planning & budgeting clarity',
-          'Post-op follow-up, wound care & reviews',
-          'Coordination for home-based recovery'
+          'Culture-based infection planning (as needed)',
+          'Debridement and stabilization strategy',
+          'Alignment correction pathways',
+          'Clear cost explanation across stages'
         ],
-        servicePrefill: 'Surgical Management / Recorrection'
+        servicePrefill: 'Recorrection / Failed Surgery'
       },
-      followup: {
-        title: 'Post-Op Follow-up & Reviews',
-        subtitle: 'Smooth recovery with clear milestones and monitoring.',
+      failedSurgery: {
+        title: 'Correction of Failed Surgeries',
+        subtitle: 'Second opinions and recorrection planning — realistic goals, safer outcomes.',
         bullets: [
-          'Wound checks & dressing support',
-          'Mobility milestones and safety guidance',
-          'Suture removal / review scheduling',
-          'Rehab coordination and progress tracking'
+          'Review of prior surgery history',
+          'Identify why the outcome failed',
+          'Recorrection options & risk explanation',
+          'Budget-fit approach without shortcuts'
+        ],
+        servicePrefill: 'Recorrection / Failed Surgery'
+      },
+      implantRemoval: {
+        title: 'Removal of Infected Plates/Screws',
+        subtitle: 'Limb-saving focus: infection control, stability restoration, and recovery support.',
+        bullets: [
+          'Infection and stability assessment',
+          'Safe staged options where needed',
+          'Wound care and close follow-up',
+          'Budget clarity with alternatives'
+        ],
+        servicePrefill: 'Recorrection / Failed Surgery'
+      },
+      xrayLab: {
+        title: 'X-Ray & Lab Collection at Home',
+        subtitle: 'Convenient diagnostics coordination for faster decisions.',
+        bullets: [
+          'Home sample collection scheduling',
+          'X-ray coordination where available',
+          'Reports aligned with next-step plan',
+          'Ideal for seniors and post-op patients'
+        ],
+        servicePrefill: 'Home Consultation'
+      },
+      injectionTraction: {
+        title: 'Injection / Traction Support',
+        subtitle: 'Relief-focused support when clinically appropriate and safe.',
+        bullets: [
+          'Safety screening before any procedure',
+          'Pain relief planning with do’s & don’ts',
+          'Home-based coordination where possible',
+          'Budget-friendly pathway discussion'
+        ],
+        servicePrefill: 'Home Consultation'
+      },
+      casting: {
+        title: 'Plastering / Casting / Fiberglass',
+        subtitle: 'Immobilization guidance and care for safe healing.',
+        bullets: [
+          'Swelling monitoring and warning signs',
+          'Care instructions for cast safety',
+          'Follow-up planning and adjustments',
+          'Budget-fit choices explained'
+        ],
+        servicePrefill: 'Home Consultation'
+      },
+      sutureRemoval: {
+        title: 'Suture Removal',
+        subtitle: 'Safe, timely removal with aftercare instructions.',
+        bullets: [
+          'Wound inspection and safety checks',
+          'Sterile removal and dressing support',
+          'Aftercare + infection warning signs',
+          'Home service coordination'
         ],
         servicePrefill: 'Wound Dressing / Suture Removal'
+      },
+      nursing: {
+        title: 'Professional Nursing Care',
+        subtitle: 'Post-op monitoring and comfort-first support.',
+        bullets: [
+          'Vitals monitoring and guidance',
+          'Support for mobility and hygiene',
+          'Coordination with doctor follow-ups',
+          'Budget-friendly home-care planning'
+        ],
+        servicePrefill: 'Nursing / Physiotherapy'
+      },
+      physio: {
+        title: 'Customized Physiotherapy',
+        subtitle: 'Progressive rehab plans with safety and confidence.',
+        bullets: [
+          'Goal-based rehab planning',
+          'Pain-aware progression and safety',
+          'Home-based coordination when needed',
+          'Budget-fit plan options'
+        ],
+        servicePrefill: 'Nursing / Physiotherapy'
+      },
+      wound: {
+        title: 'Wound Dressing',
+        subtitle: 'Sterile dressing support with recovery monitoring.',
+        bullets: [
+          'Gentle dressing & wound evaluation',
+          'Infection warning signs explained',
+          'Follow-up schedule guidance',
+          'Home service convenience'
+        ],
+        servicePrefill: 'Wound Dressing / Suture Removal'
+      },
+      followups: {
+        title: 'Dedicated Recovery Follow-ups',
+        subtitle: 'Milestones, reassurance, and timely corrections to stay on track.',
+        bullets: [
+          'Milestones and movement targets',
+          'Medication & wound-care reminders',
+          'Physio coordination and progress checks',
+          'Budget-friendly recovery planning'
+        ],
+        servicePrefill: 'Nursing / Physiotherapy'
       }
     };
 
@@ -1531,7 +1874,6 @@
       const serviceSel = document.getElementById('service');
       if (serviceSel && data.servicePrefill) serviceSel.value = data.servicePrefill;
 
-      // Set modal CTA to go contact
       modalBook.onclick = (e) => {
         e.preventDefault();
         closeModal();
@@ -1542,8 +1884,6 @@
       modal.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
       lucide.createIcons();
-
-      // focus close button
       setTimeout(() => modalClose?.focus(), 50);
     }
 
@@ -1563,10 +1903,9 @@
       if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
     });
 
-    // Form validation & lightweight submission UX + WhatsApp link
+    // Form validation & submission UX + WhatsApp link
     const form = document.getElementById('leadForm');
     const statusEl = document.getElementById('formStatus');
-    const toast = document.getElementById('toast');
     const whatsAppBox = document.getElementById('whatsAppBox');
     const waLinkEl = document.getElementById('waLink');
 
@@ -1618,22 +1957,13 @@
       const payload = { name, phone, email, service, preferredTime, message, ts: new Date().toISOString() };
       console.log('Lead payload:', payload);
 
-      // Success UI
       statusEl.classList.remove('hidden');
       statusEl.classList.add('border-emerald-200', 'bg-emerald-50', 'text-emerald-900');
       statusEl.innerHTML = '<span class="font-black">Thank you.</span> Your request has been submitted. For urgent concerns, call <a class="font-black underline" href="tel:+919840596418">98405 96418</a>.';
 
-      // WhatsApp prefilled option
       const waText = `Hello S2J Ortho,\n\nName: ${name}\nPhone: ${phone}\nService: ${service}${preferredTime ? `\nPreferred time: ${preferredTime}` : ''}\n\nMessage:\n${message}`;
       waLinkEl.setAttribute('href', buildWhatsAppLink(waText));
       whatsAppBox.classList.remove('hidden');
-
-      // Toast
-      toast.classList.remove('hidden');
-      setTimeout(() => toast.classList.add('hidden'), 5200);
-
-      // Keep the message visible for user; do not reset entire form to allow edits
-      // (optional: you can call form.reset() if you prefer)
 
       lucide.createIcons();
     });
