@@ -135,14 +135,15 @@
     <nav id="nav" class="glass border-b border-slate-200/70">
       <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <!-- Logo -->
-       <!-- Logo Placeholder replacement -->
-<a href="#top" class="flex items-center gap-3">
-  <img src="logo.jpg" alt="S2J Logo" class="h-12 w-auto object-contain" />
-  <div class="leading-tight">
-    <p class="text-[15px] font-semibold tracking-tight">S2J Ortho Health</p>
-    <p class="text-xs text-slate-500">Orthopedic • Rehab • Home Care</p>
-  </div>
-</a>
+        <a href="#top" class="flex items-center gap-3" aria-label="S2J Ortho Health Services home">
+          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--s2j-blue)] text-white font-semibold tracking-tight">
+            S2J
+          </div>
+          <div class="leading-tight">
+            <p class="text-[15px] font-semibold tracking-tight">S2J Ortho Health</p>
+            <p class="text-xs text-slate-500">Orthopedic • Rehab • Home Care</p>
+          </div>
+        </a>
 
         <!-- Desktop Nav -->
         <div class="hidden items-center gap-7 text-sm font-medium md:flex">
@@ -926,35 +927,22 @@
             </form>
 
             <!-- Minimal embedded map (lightweight link style) -->
-           <!-- Location with Image -->
-<div class="rounded-[2rem] border border-slate-200 bg-white overflow-hidden shadow-sm">
-  <div class="h-48 w-full bg-slate-100">
-    <img 
-      src="UNGA_LOCATION_IMAGE_LINK" 
-      alt="S2J Ortho Location Chennai" 
-      class="h-full w-full object-cover"
-    />
-  </div>
-  <div class="p-7">
-    <p class="text-sm font-semibold text-[var(--s2j-blue)]">Our Service Coverage</p>
-    <p class="mt-2 text-sm text-slate-600">We prioritize nearby areas for quick home visits and faster emergency coordination.</p>
-    <div class="mt-4 flex flex-wrap gap-2">
-      <span class="text-xs rounded-full bg-slate-100 px-3 py-1 text-slate-600">Mylapore</span>
+            <div class="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-sm">
+              <p class="text-sm font-semibold">Service coverage</p>
+              <p class="mt-2 text-sm text-slate-600">We prioritize nearby areas for quick home visits and faster emergency coordination.</p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="text-xs rounded-full bg-slate-100 px-3 py-1 text-slate-600">Mylapore</span>
                 <span class="text-xs rounded-full bg-slate-100 px-3 py-1 text-slate-600">Royapettah</span>
                 <span class="text-xs rounded-full bg-slate-100 px-3 py-1 text-slate-600">Triplicane</span>
                 <span class="text-xs rounded-full bg-slate-100 px-3 py-1 text-slate-600">Mandaveli</span>
                 <span class="text-xs rounded-full bg-slate-100 px-3 py-1 text-slate-600">RA Puram</span>
                 <span class="text-xs rounded-full bg-slate-100 px-3 py-1 text-slate-600">Alwarpet</span>
                 <span class="text-xs rounded-full bg-slate-100 px-3 py-1 text-slate-600">Teynampet</span>
-    </div>
-    <div class="mt-5">
-      <a class="text-sm font-semibold text-[var(--s2j-blue)] hover:underline flex items-center gap-2" target="_blank" href="https://www.google.com/maps/search/?api=1&query=S2J+Ortho+Health+Services+Chennai">
-        Open in Google Maps 
-        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-      </a>
-    </div>
-  </div>
-</div>
+              </div>
+              <div class="mt-5">
+                <a class="text-sm font-semibold text-[var(--s2j-blue)] hover:underline" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=S2J+Ortho+Health+Services+Chennai">Open in Google Maps</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
